@@ -1,0 +1,3 @@
+class SignInWithGoogleUseCase {
+  const SignInWithGoogleUseCase();
+}
