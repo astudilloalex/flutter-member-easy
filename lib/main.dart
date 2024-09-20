@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:member_easy/injection.dart';
+import 'package:member_easy/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Injection.init();
-  runApp(const MyApp());
+  runApp(
+    const MyApp(
+      appRouter: AppRouter(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+    required this.appRouter,
+  });
+
+  final AppRouter appRouter;
 
   // This widget is the root of your application.
   @override
