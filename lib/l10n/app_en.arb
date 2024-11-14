@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "email": "Email",
+  "@email": {},
+  "invalidEmail": "Invalid email",
+  "@invalidEmail": {},
+  "password": "Password",
+  "@password": {},
+  "signIn": "Sign in",
+  "@signIn": {},
+  "weakPassword": "Weak password",
+  "@weakPassword": {}
+}
