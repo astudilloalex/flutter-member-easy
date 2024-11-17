@@ -30,7 +30,6 @@ class CompanyCubit extends Cubit<CompanyState> {
   Future<void> init() async {
     if (isClosed) return;
     List<Company> companies = [];
-    Company? selectedCompany;
     try {
       emit(
         state.copyWith(
