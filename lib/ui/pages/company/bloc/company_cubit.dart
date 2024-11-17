@@ -3,17 +3,18 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:member_easy/app/errors/failure.dart';
+import 'package:member_easy/app/models/optional.dart';
 import 'package:member_easy/src/company/application/company_service.dart';
 import 'package:member_easy/src/company/domain/company.dart';
 import 'package:member_easy/src/user/domain/user.dart';
-import 'package:member_easy/ui/pages/home/bloc/home_state.dart';
+import 'package:member_easy/ui/pages/company/bloc/company_state.dart';
 
-class HomeCubit extends Cubit<HomeState> {
-  HomeCubit({
+class CompanyCubit extends Cubit<CompanyState> {
+  CompanyCubit({
     required this.companyService,
     required this.currentUser,
-  }) : super(const HomeState()) {
-    log('HomeCubit created', name: 'Cubit');
+  }) : super(const CompanyState()) {
+    log('CompanyCubit created', name: 'Cubit');
     init();
   }
 
@@ -22,33 +23,41 @@ class HomeCubit extends Cubit<HomeState> {
 
   @override
   Future<void> close() {
-    log('HomeCubit closed', name: 'Cubit');
+    log('CompanyCubit closed', name: 'Cubit');
     return super.close();
   }
 
   Future<void> init() async {
     if (isClosed) return;
     List<Company> companies = [];
+    Company? selectedCompany;
     try {
-      emit(state.copyWith(isLoading: true, companies: []));
+      emit(
+        state.copyWith(
+          isLoading: true,
+          error: '',
+        ),
+      );
       final Either<Failure, List<Company>> response =
-          await companyService.byOnwerCode(currentUser.code);
-
+          await companyService.byOnwerCode(
+        currentUser.code,
+      );
       response.fold(
         (failure) {},
         (companyList) {
           companies = companyList;
         },
       );
+    } catch (e) {
+      rethrow;
     } finally {
-      if (!isClosed) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            companies: companies,
-          ),
-        );
-      }
+      emit(
+        state.copyWith(
+          isLoading: false,
+          companies: companies,
+          selectedCompany: Optional.of(companies.firstOrNull),
+        ),
+      );
     }
   }
 }

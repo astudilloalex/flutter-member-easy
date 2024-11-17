@@ -1,13 +1,23 @@
 {
   "@@locale": "en",
+  "companies":"Companies",
+  "@companies":{},
+  "configuration": "Configuration",
+  "@configuration": {},
+  "doYouHaveACompany": "Do you have a company?",
+  "@doYouHaveACompany": {},
   "email": "Email",
   "@email": {},
   "invalidEmail": "Invalid email",
   "@invalidEmail": {},
   "password": "Password",
   "@password": {},
+  "pleaseRequestToCreateOneBelow": "Please request to create one below",
+  "@pleaseRequestToCreateOneBelow": {},
   "signIn": "Sign in",
   "@signIn": {},
   "weakPassword": "Weak password",
-  "@weakPassword": {}
+  "@weakPassword": {},
+  "youDontHaveAnyBusinesses": "You don't have any businesses",
+  "@youDontHaveAnyBusinesses": {}
 }

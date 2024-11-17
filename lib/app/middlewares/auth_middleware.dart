@@ -8,6 +8,7 @@ class AuthMiddleware extends ChangeNotifier {
   AuthMiddleware(this.authService) {
     _subscription = authService.authStateChanges().listen((user) {
       _loggedIn = user != null;
+      _currentUser = user;
       notifyListeners();
     });
   }
@@ -15,6 +16,7 @@ class AuthMiddleware extends ChangeNotifier {
   final AuthService authService;
   late final StreamSubscription<User?> _subscription;
   bool _loggedIn = true;
+  User? _currentUser;
 
   @override
   void dispose() {
@@ -23,4 +25,5 @@ class AuthMiddleware extends ChangeNotifier {
   }
 
   bool get loggedIn => _loggedIn;
+  User? get currentUser => _currentUser;
 }

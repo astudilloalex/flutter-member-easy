@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:member_easy/app/bloc/app_cubit.dart';
 import 'package:member_easy/app/middlewares/auth_middleware.dart';
 import 'package:member_easy/firebase_options.dart';
 import 'package:member_easy/injection.dart';
@@ -14,10 +16,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _init();
   runApp(
-    MyApp(
-      router: RoutePage(
-        authMiddleware: getIt<AuthMiddleware>(),
-      ).router,
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AppCubit()),
+      ],
+      child: MyApp(
+        router: RoutePage(
+          authMiddleware: getIt<AuthMiddleware>(),
+        ).router,
+      ),
     ),
   );
 }
@@ -43,7 +50,7 @@ class MyApp extends StatelessWidget {
 
 Future<void> _init() async {
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currenPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   if (kIsWeb) {
     await FirebaseAuth.instance.setPersistence(Persistence.SESSION);
