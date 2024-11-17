@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:member_easy/src/membership/domain/membership.dart';
+import 'package:member_easy/src/summary/domain/summary.dart';
 
-class MembershipMapper {
-  const MembershipMapper._();
+class SummaryMapper {
+  const SummaryMapper._();
 
-  static Membership fromFirestore(
+  static Summary fromFirestore(
     QueryDocumentSnapshot<Map<String, dynamic>> document,
   ) {
     final Map<String, dynamic> json = document.data();
-    return Membership(
+    return Summary(
       code: document.id,
       id: json['id'] as int,
       name: json['name'] as String,
-      cost: double.parse(json['cost'].toString()),
+      value: json['value'] as String,
     );
   }
 }

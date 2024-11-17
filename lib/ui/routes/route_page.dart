@@ -5,6 +5,7 @@ import 'package:member_easy/app/middlewares/auth_middleware.dart';
 import 'package:member_easy/injection.dart';
 import 'package:member_easy/src/auth/application/auth_service.dart';
 import 'package:member_easy/src/company/application/company_service.dart';
+import 'package:member_easy/src/summary/application/summary_service.dart';
 import 'package:member_easy/ui/pages/company/bloc/company_cubit.dart';
 import 'package:member_easy/ui/pages/company/company_page.dart';
 import 'package:member_easy/ui/pages/home/bloc/home_cubit.dart';
@@ -54,6 +55,7 @@ class RoutePage {
             create: (context) => HomeCubit(
               companyService: getIt<CompanyService>(),
               currentUser: context.read<AppCubit>().state.currentUser!,
+              summaryService: getIt<SummaryService>(),
             ),
             child: const HomePage(),
           ),

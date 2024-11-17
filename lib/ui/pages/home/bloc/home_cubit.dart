@@ -5,6 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:member_easy/app/errors/failure.dart';
 import 'package:member_easy/src/company/application/company_service.dart';
 import 'package:member_easy/src/company/domain/company.dart';
+import 'package:member_easy/src/summary/application/summary_service.dart';
 import 'package:member_easy/src/user/domain/user.dart';
 import 'package:member_easy/ui/pages/home/bloc/home_state.dart';
 
@@ -12,6 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required this.companyService,
     required this.currentUser,
+    required this.summaryService,
   }) : super(const HomeState()) {
     log('HomeCubit created', name: 'Cubit');
     init();
@@ -19,6 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   final CompanyService companyService;
   final User currentUser;
+  final SummaryService summaryService;
 
   @override
   Future<void> close() {

@@ -8,6 +8,12 @@ import 'package:member_easy/src/auth/infrastructure/firebase_auth_repository.dar
 import 'package:member_easy/src/company/application/company_service.dart';
 import 'package:member_easy/src/company/domain/i_company_repository.dart';
 import 'package:member_easy/src/company/infrastructure/firebase_company_repository.dart';
+import 'package:member_easy/src/membership/application/membership_service.dart';
+import 'package:member_easy/src/membership/domain/i_membership_repository.dart';
+import 'package:member_easy/src/membership/infrastructure/firebase_membership_repository.dart';
+import 'package:member_easy/src/summary/application/summary_service.dart';
+import 'package:member_easy/src/summary/domain/i_summary_repository.dart';
+import 'package:member_easy/src/summary/infrastructure/firebase_summary_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -22,6 +28,12 @@ class Injection {
     getIt.registerLazySingleton<ICompanyRepository>(
       () => FirebaseCompanyRepository(FirebaseFirestore.instance),
     );
+    getIt.registerLazySingleton<IMembershipRepository>(
+      () => FirebaseMembershipRepository(FirebaseFirestore.instance),
+    );
+    getIt.registerLazySingleton<ISummaryRepository>(
+      () => FirebaseSummaryRepository(FirebaseFirestore.instance),
+    );
 
     // Declare services
     getIt.registerFactory<AuthService>(
@@ -29,6 +41,12 @@ class Injection {
     );
     getIt.registerFactory<CompanyService>(
       () => CompanyService(getIt<ICompanyRepository>()),
+    );
+    getIt.registerFactory<MembershipService>(
+      () => MembershipService(getIt<IMembershipRepository>()),
+    );
+    getIt.registerFactory<SummaryService>(
+      () => SummaryService(getIt<ISummaryRepository>()),
     );
 
     // Declare middlewares
