@@ -10,7 +10,14 @@ abstract class IAuthRepository {
     required String password,
   });
 
+  Future<Either<Failure, User>> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
+
   Stream<User?> authStateChanges();
 
   Future<User?> get currentUser;
+
+  Future<void> signOut();
 }

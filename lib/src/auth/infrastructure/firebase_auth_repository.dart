@@ -72,4 +72,37 @@ class FirebaseAuthRepository implements IAuthRepository {
       tenantId: _firebaseAuth.currentUser!.tenantId,
     );
   }
+
+  @override
+  Future<Either<Failure, User>> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    final UserCredential userCredential =
+        await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    if (userCredential.user == null) {
+      return const Left(FirebaseFailure('failed-to-create-user'));
+    }
+    return Right(
+      User(
+        code: userCredential.user!.uid,
+        displayName: userCredential.user!.displayName,
+        email: userCredential.user!.email,
+        emailVerified: userCredential.user!.emailVerified,
+        isAnonymous: userCredential.user!.isAnonymous,
+        phoneNumber: userCredential.user!.phoneNumber,
+        photoURL: userCredential.user!.photoURL,
+        refreshToken: userCredential.user!.refreshToken,
+        tenantId: userCredential.user!.tenantId,
+      ),
+    );
+  }
+
+  @override
+  Future<void> signOut() {
+    return _firebaseAuth.signOut();
+  }
 }

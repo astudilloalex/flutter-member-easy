@@ -12,6 +12,8 @@ import 'package:member_easy/ui/pages/home/bloc/home_cubit.dart';
 import 'package:member_easy/ui/pages/home/home_page.dart';
 import 'package:member_easy/ui/pages/sign_in/bloc/sign_in_cubit.dart';
 import 'package:member_easy/ui/pages/sign_in/sign_in_page.dart';
+import 'package:member_easy/ui/pages/sign_up/bloc/sign_up_cubit.dart';
+import 'package:member_easy/ui/pages/sign_up/sign_up_page.dart';
 import 'package:member_easy/ui/pages/splash/bloc/splash_cubit.dart';
 import 'package:member_easy/ui/pages/splash/splash_page.dart';
 import 'package:member_easy/ui/routes/route_name.dart';
@@ -30,7 +32,8 @@ class RoutePage {
         context.read<AppCubit>().updateCurrentUser(authMiddleware.currentUser);
         if (!authMiddleware.loggedIn) {
           if (state.matchedLocation == RouteName.signIn ||
-              state.matchedLocation == RouteName.splash) {
+              state.matchedLocation == RouteName.splash ||
+              state.matchedLocation == RouteName.signUp) {
             return null;
           }
           return RouteName.signIn;
@@ -67,6 +70,15 @@ class RoutePage {
               authService: getIt<AuthService>(),
             ),
             child: const SignInPage(),
+          ),
+        ),
+        GoRoute(
+          path: RouteName.signUp,
+          builder: (context, state) => BlocProvider(
+            create: (context) => SignUpCubit(
+              authService: getIt<AuthService>(),
+            ),
+            child: const SignUpPage(),
           ),
         ),
         GoRoute(

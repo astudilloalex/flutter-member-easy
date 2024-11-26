@@ -7,6 +7,7 @@ class AppThemeData {
 
   static ThemeData get light {
     const ColorThemeExtension colorThemeExtension = ColorThemeExtension(
+      link: CustomColors.dodgerBlue,
       shimmerBaseColor: CustomColors.platinum,
       shimmerHighlightColor: CustomColors.whiteSmoke,
     );

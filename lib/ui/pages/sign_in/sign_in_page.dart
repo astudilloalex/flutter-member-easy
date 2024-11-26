@@ -4,9 +4,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:member_easy/ui/pages/sign_in/bloc/sign_in_cubit.dart';
 import 'package:member_easy/ui/pages/sign_in/bloc/sign_in_state.dart';
+import 'package:member_easy/ui/pages/sign_in/widgets/sign_in_button.dart';
 import 'package:member_easy/ui/pages/sign_in/widgets/sign_in_form.dart';
+import 'package:member_easy/ui/pages/sign_in/widgets/sign_in_google_button.dart';
+import 'package:member_easy/ui/routes/route_name.dart';
+import 'package:member_easy/ui/theme/color_theme_extension.dart';
 import 'package:member_easy/ui/utils/banner_util.dart';
-import 'package:member_easy/ui/widgets/loading_indicator.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -31,35 +34,75 @@ class SignInPage extends StatelessWidget {
               context.go(state.nextRoute);
             }
           },
-          child: CustomScrollView(
-            slivers: [
-              const SignInForm(),
-              SliverList.list(
-                children: [
-                  const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: BlocSelector<SignInCubit, SignInState, bool>(
-                      selector: (state) => state.isLoading,
-                      builder: (context, isLoading) {
-                        return LoadingIndicator(
-                          isLoading: isLoading,
-                          child: ElevatedButton(
-                            onPressed: isLoading
-                                ? () {}
-                                : () {
-                                    context
-                                        .read<SignInCubit>()
-                                        .signInWithEmailAndPassword();
-                                  },
-                            child: Text(AppLocalizations.of(context)!.signIn),
+          child: Column(
+            children: [
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    const SignInForm(),
+                    SliverList.list(
+                      children: [
+                        const SizedBox(height: 16.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: SignInButton(),
+                        ),
+                        const SizedBox(height: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            children: [
+                              const Expanded(
+                                child: Divider(),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(context)!.orContinueWith,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              const Expanded(
+                                child: Divider(),
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+                        const SizedBox(height: 16.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: SignInGoogleButton(),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(height: 16.0),
+              Text.rich(
+                TextSpan(
+                  text: '${AppLocalizations.of(context)!.doNotHaveAnAccount} ',
+                  children: [
+                    WidgetSpan(
+                      child: InkWell(
+                        onTap: () {
+                          context.go(RouteName.signUp);
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.signUp,
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Theme.of(context)
+                                .extension<ColorThemeExtension>()
+                                ?.link,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16.0),
             ],
           ),
         ),

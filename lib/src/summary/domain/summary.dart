@@ -1,6 +1,10 @@
 class Summary {
-  const Summary(
-      {this.code = '', this.id = 0, required this.name, required this.value});
+  const Summary({
+    this.code = '',
+    this.id = 0,
+    required this.name,
+    required this.value,
+  });
 
   final String code;
   final int id;
