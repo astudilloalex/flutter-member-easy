@@ -15,17 +15,18 @@ class HomeDrawer extends StatelessWidget {
           children: [
             const HomeDrawerHeader(),
             Expanded(
-                child: ListView(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.card_membership),
-                  title: Text(
-                    AppLocalizations.of(context)!.members,
+              child: ListView(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.card_membership),
+                    title: Text(
+                      AppLocalizations.of(context)!.members,
+                    ),
+                    onTap: () {},
                   ),
-                  onTap: () {},
-                ),
-              ],
-            )),
+                ],
+              ),
+            ),
             ListTile(
               leading: const Icon(Icons.settings_outlined),
               title: Text(
