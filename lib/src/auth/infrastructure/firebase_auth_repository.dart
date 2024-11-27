@@ -105,4 +105,34 @@ class FirebaseAuthRepository implements IAuthRepository {
   Future<void> signOut() {
     return _firebaseAuth.signOut();
   }
+
+  @override
+  Future<Either<Failure, User>> signInWithGoogle(
+    OAuthCredential? oAuthCredential,
+    AuthProvider? authProvider, {
+    bool isWeb = false,
+  }) async {
+    assert(oAuthCredential != null || authProvider != null);
+    final UserCredential userCredential = oAuthCredential != null
+        ? await _firebaseAuth.signInWithCredential(
+            oAuthCredential,
+          )
+        : await _firebaseAuth.signInWithPopup(authProvider!);
+    if (userCredential.user == null) {
+      return const Left(FirebaseFailure('user-not-found'));
+    }
+    return Right(
+      User(
+        code: userCredential.user!.uid,
+        displayName: userCredential.user!.displayName,
+        email: userCredential.user!.email,
+        emailVerified: userCredential.user!.emailVerified,
+        isAnonymous: userCredential.user!.isAnonymous,
+        phoneNumber: userCredential.user!.phoneNumber,
+        photoURL: userCredential.user!.photoURL,
+        refreshToken: userCredential.user!.refreshToken,
+        tenantId: userCredential.user!.tenantId,
+      ),
+    );
+  }
 }

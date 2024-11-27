@@ -37,7 +37,9 @@ class CompanyState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       selectedCompany: selectedCompany == null
           ? this.selectedCompany
-          : selectedCompany.value,
+          : selectedCompany.isPresent
+              ? selectedCompany.value
+              : null,
     );
   }
 }

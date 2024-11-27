@@ -31,12 +31,12 @@ class CompanyPage extends StatelessWidget {
                   onPressed: () async {
                     if (await canLaunchUrl(
                       Uri.parse(
-                        'whatsapp://send?text=I want to register my company&phone=593987980568',
+                        'https://wa.me/593987980568?text=${Uri.encodeComponent('Member Easy: I need a company')}',
                       ),
                     )) {
                       launchUrl(
                         Uri.parse(
-                          'whatsapp://send?text=sample text&phone=593987980568',
+                          'https://wa.me/593987980568?text=${Uri.encodeComponent('Member Easy: I need a company')}',
                         ),
                       );
                     } else {

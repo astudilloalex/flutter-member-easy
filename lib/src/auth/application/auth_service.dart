@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:member_easy/app/errors/failure.dart';
 import 'package:member_easy/src/auth/domain/i_auth_repository.dart';
 import 'package:member_easy/src/user/domain/i_user_repository.dart';
@@ -82,6 +83,51 @@ class AuthService {
     try {
       await _repository.signOut();
       return const Right(true);
+    } catch (e) {
+      return Left(FirebaseFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, User>> signInWithGoogle({
+    bool isWeb = false,
+  }) async {
+    try {
+      // Only if web
+      if (isWeb) {
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        final Either<Failure, User> response =
+            await _repository.signInWithGoogle(null, googleProvider);
+        return await response.fold(
+          (failure) {
+            return Left(failure);
+          },
+          (user) async {
+            await userRepository.saveOrUpdate(user);
+            return Right(user);
+          },
+        );
+      }
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      // Create a new credential
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      final Either<Failure, User> response =
+          await _repository.signInWithGoogle(credential, null);
+      return await response.fold(
+        (failure) {
+          return Left(failure);
+        },
+        (user) async {
+          await userRepository.saveOrUpdate(user);
+          return Right(user);
+        },
+      );
     } catch (e) {
       return Left(FirebaseFailure(e.toString()));
     }

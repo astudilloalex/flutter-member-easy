@@ -10,6 +10,8 @@ class ErrorCodeMapper {
     final Map<String, String> data = {
       'invalid-email': AppLocalizations.of(context)!.invalidEmail,
       'weak-password': AppLocalizations.of(context)!.weakPassword,
+      'passwords-do-not-match':
+          AppLocalizations.of(context)!.passwordsDoNotMatch,
     };
     return data[code] ?? code;
   }

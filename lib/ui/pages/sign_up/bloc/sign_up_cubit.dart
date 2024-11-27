@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:member_easy/app/errors/failure.dart';
+import 'package:member_easy/app/utils/app_util.dart';
 import 'package:member_easy/src/auth/application/auth_service.dart';
 import 'package:member_easy/src/user/domain/user.dart';
 import 'package:member_easy/ui/pages/sign_up/bloc/sign_up_state.dart';
@@ -31,6 +33,42 @@ class SignUpCubit extends Cubit<SignUpState> {
     confirmPasswordController.dispose();
     log('SignUpCubit closed', name: 'Cubit');
     return super.close();
+  }
+
+  Future<void> signInWithGoogle() async {
+    if (isClosed) return;
+    String error = '';
+    String nextRoute = '';
+    try {
+      emit(
+        state.copyWith(
+          isLoading: true,
+          error: error,
+          nextRoute: nextRoute,
+        ),
+      );
+      final Either<Failure, User> response = await authService.signInWithGoogle(
+        isWeb: kIsWeb,
+      );
+      response.fold(
+        (failure) {
+          error = failure.message;
+        },
+        (user) {
+          nextRoute = RouteName.home;
+        },
+      );
+    } finally {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: error,
+            nextRoute: nextRoute,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> signUp() async {
@@ -70,5 +108,28 @@ class SignUpCubit extends Cubit<SignUpState> {
         );
       }
     }
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || !AppUtil.isValidEmail(value.trim())) {
+      return 'invalid-email';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || !AppUtil.isSecurePassword(value.trim())) {
+      return 'weak-password';
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
+    if (value == null ||
+        passwordController.text.trim() !=
+            confirmPasswordController.text.trim()) {
+      return 'passwords-do-not-match';
+    }
+    return null;
   }
 }

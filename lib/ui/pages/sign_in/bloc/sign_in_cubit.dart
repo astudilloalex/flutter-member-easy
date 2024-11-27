@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
@@ -29,6 +30,42 @@ class SignInCubit extends Cubit<SignInState> {
     passwordController.dispose();
     log('SignInCubit closed', name: 'Cubit');
     return super.close();
+  }
+
+  Future<void> signInWithGoogle() async {
+    if (isClosed) return;
+    String error = '';
+    String nextRoute = '';
+    try {
+      emit(
+        state.copyWith(
+          isLoading: true,
+          error: error,
+          nextRoute: nextRoute,
+        ),
+      );
+      final Either<Failure, User> response = await authService.signInWithGoogle(
+        isWeb: kIsWeb,
+      );
+      response.fold(
+        (failure) {
+          error = failure.message;
+        },
+        (user) {
+          nextRoute = RouteName.home;
+        },
+      );
+    } finally {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: error,
+            nextRoute: nextRoute,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> signInWithEmailAndPassword() async {

@@ -19,7 +19,11 @@ class SignInGoogleButton extends StatelessWidget {
           child: ElevatedButton.icon(
             icon: const Icon(FontAwesomeIcons.google),
             label: Text(AppLocalizations.of(context)!.google),
-            onPressed: isLoading ? () {} : () {},
+            onPressed: isLoading
+                ? () {}
+                : () {
+                    context.read<SignInCubit>().signInWithGoogle();
+                  },
           ),
         );
       },
