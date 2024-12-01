@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:member_easy/app/errors/failure.dart';
 import 'package:member_easy/src/auth/domain/i_auth_repository.dart';
 import 'package:member_easy/src/user/domain/user.dart';
@@ -102,8 +103,15 @@ class FirebaseAuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<void> signOut() {
-    return _firebaseAuth.signOut();
+  Future<void> signOut() async {
+    if (_firebaseAuth.currentUser == null) return;
+    final List<UserInfo> userInfo = _firebaseAuth.currentUser!.providerData;
+    if (userInfo.any(
+      (element) => element.providerId == 'google.com',
+    )) {
+      await GoogleSignIn().signOut();
+    }
+    await _firebaseAuth.signOut();
   }
 
   @override

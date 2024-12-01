@@ -52,7 +52,7 @@ class SignInCubit extends Cubit<SignInState> {
           error = failure.message;
         },
         (user) {
-          nextRoute = RouteName.home;
+          nextRoute = RouteName.splash;
         },
       );
     } finally {
@@ -93,7 +93,7 @@ class SignInCubit extends Cubit<SignInState> {
           error = failure.message;
         },
         (user) {
-          nextRoute = RouteName.home;
+          nextRoute = RouteName.splash;
         },
       );
     } finally {

@@ -6,10 +6,14 @@ import 'package:member_easy/injection.dart';
 import 'package:member_easy/src/auth/application/auth_service.dart';
 import 'package:member_easy/src/company/application/company_service.dart';
 import 'package:member_easy/src/summary/application/summary_service.dart';
+import 'package:member_easy/ui/pages/add_edit_member/add_edit_member_page.dart';
+import 'package:member_easy/ui/pages/add_edit_member/bloc/add_edit_member_cubit.dart';
 import 'package:member_easy/ui/pages/company/bloc/company_cubit.dart';
 import 'package:member_easy/ui/pages/company/company_page.dart';
 import 'package:member_easy/ui/pages/home/bloc/home_cubit.dart';
 import 'package:member_easy/ui/pages/home/home_page.dart';
+import 'package:member_easy/ui/pages/member/bloc/member_cubit.dart';
+import 'package:member_easy/ui/pages/member/member_page.dart';
 import 'package:member_easy/ui/pages/sign_in/bloc/sign_in_cubit.dart';
 import 'package:member_easy/ui/pages/sign_in/sign_in_page.dart';
 import 'package:member_easy/ui/pages/sign_up/bloc/sign_up_cubit.dart';
@@ -43,6 +47,15 @@ class RoutePage {
       refreshListenable: authMiddleware,
       routes: [
         GoRoute(
+          path: RouteName.addEditMember,
+          builder: (context, state) => BlocProvider(
+            create: (context) => AddEditMemberCubit(
+              company: context.read<AppCubit>().state.currentCompany,
+            ),
+            child: const AddEditMemberPage(),
+          ),
+        ),
+        GoRoute(
           path: RouteName.company,
           builder: (context, state) => BlocProvider(
             create: (context) => CompanyCubit(
@@ -61,6 +74,13 @@ class RoutePage {
               summaryService: getIt<SummaryService>(),
             ),
             child: const HomePage(),
+          ),
+        ),
+        GoRoute(
+          path: RouteName.member,
+          builder: (context, state) => BlocProvider(
+            create: (context) => MemberCubit(),
+            child: const MemberPage(),
           ),
         ),
         GoRoute(
@@ -86,6 +106,7 @@ class RoutePage {
           builder: (context, state) => BlocProvider(
             create: (context) => SplashCubit(
               authService: getIt<AuthService>(),
+              companyService: getIt<CompanyService>(),
             ),
             child: const SplashPage(),
           ),

@@ -9,6 +9,7 @@ import 'package:member_easy/app/bloc/app_cubit.dart';
 import 'package:member_easy/app/middlewares/auth_middleware.dart';
 import 'package:member_easy/firebase_options.dart';
 import 'package:member_easy/injection.dart';
+import 'package:member_easy/src/auth/application/auth_service.dart';
 import 'package:member_easy/ui/routes/route_page.dart';
 import 'package:member_easy/ui/theme/app_theme_data.dart';
 
@@ -18,7 +19,11 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(
+          create: (context) => AppCubit(
+            authService: getIt<AuthService>(),
+          ),
+        ),
       ],
       child: MyApp(
         router: RoutePage(

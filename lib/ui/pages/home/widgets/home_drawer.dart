@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:member_easy/ui/pages/home/widgets/home_drawer_header.dart';
 import 'package:member_easy/ui/routes/route_name.dart';
+import 'package:member_easy/ui/widgets/logout_alert_dialog.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
@@ -22,7 +23,9 @@ class HomeDrawer extends StatelessWidget {
                     title: Text(
                       AppLocalizations.of(context)!.members,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      context.push(RouteName.member);
+                    },
                   ),
                 ],
               ),
@@ -34,6 +37,19 @@ class HomeDrawer extends StatelessWidget {
               ),
               onTap: () {
                 context.push(RouteName.company);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout_outlined),
+              title: Text(
+                AppLocalizations.of(context)!.logout,
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => const LogoutAlertDialog(),
+                );
               },
             ),
           ],

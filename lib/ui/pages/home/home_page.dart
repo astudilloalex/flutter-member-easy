@@ -5,6 +5,7 @@ import 'package:member_easy/ui/pages/home/bloc/home_cubit.dart';
 import 'package:member_easy/ui/pages/home/bloc/home_state.dart';
 import 'package:member_easy/ui/pages/home/widgets/home_app_bar.dart';
 import 'package:member_easy/ui/pages/home/widgets/home_drawer.dart';
+import 'package:member_easy/ui/pages/home/widgets/home_speed_dial.dart';
 import 'package:member_easy/ui/pages/home/widgets/home_summary_list.dart';
 
 class HomePage extends StatelessWidget {
@@ -19,13 +20,11 @@ class HomePage extends StatelessWidget {
         if (state.companies.isEmpty) return;
         context.read<AppCubit>().changeCurrentCompany(state.companies.first);
       },
-      child: Scaffold(
-        appBar: const HomeAppBar(),
-        body: const HomeSummaryList(),
-        drawer: const HomeDrawer(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-        ),
+      child: const Scaffold(
+        appBar: HomeAppBar(),
+        body: HomeSummaryList(),
+        drawer: HomeDrawer(),
+        floatingActionButton: HomeSpeedDial(),
       ),
     );
   }

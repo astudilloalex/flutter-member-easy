@@ -55,7 +55,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           error = failure.message;
         },
         (user) {
-          nextRoute = RouteName.home;
+          nextRoute = RouteName.splash;
         },
       );
     } finally {
@@ -94,7 +94,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           error = failure.message;
         },
         (user) {
-          nextRoute = RouteName.home;
+          nextRoute = RouteName.splash;
         },
       );
     } finally {
