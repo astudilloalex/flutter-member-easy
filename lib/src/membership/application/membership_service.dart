@@ -14,7 +14,7 @@ class MembershipService {
     try {
       return Right(await _repository.findByCompanyCode(companyCode));
     } catch (e) {
-      return Left(FirebaseFailure(e.toString()));
+      return Left(FirebaseFailure(message: e.toString()));
     }
   }
 }

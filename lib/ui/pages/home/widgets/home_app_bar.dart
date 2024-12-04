@@ -4,6 +4,7 @@ import 'package:member_easy/app/asset/icon_asset.dart';
 import 'package:member_easy/app/bloc/app_cubit.dart';
 import 'package:member_easy/app/bloc/app_state.dart';
 import 'package:member_easy/src/company/domain/company.dart';
+import 'package:member_easy/ui/widgets/my_user_qr_code_dialog.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -20,9 +21,19 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Image.asset(IconAsset.loading.name, height: 30.0),
+        IconButton(
+          icon: Image.asset(
+            IconAsset.loading.name,
+            width: 24.0,
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const MyUserQRCodeDialog();
+              },
+            );
+          },
         ),
       ],
     );

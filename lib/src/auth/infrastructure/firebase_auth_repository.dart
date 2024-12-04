@@ -21,7 +21,7 @@ class FirebaseAuthRepository implements IAuthRepository {
       password: password,
     );
     if (userCredential.user == null) {
-      return const Left(FirebaseFailure('user-not-found'));
+      return const Left(FirebaseFailure(failureEnum: FailureEnum.userNotFound));
     }
     return Right(
       User(
@@ -85,7 +85,11 @@ class FirebaseAuthRepository implements IAuthRepository {
       password: password,
     );
     if (userCredential.user == null) {
-      return const Left(FirebaseFailure('failed-to-create-user'));
+      return const Left(
+        FirebaseFailure(
+          failureEnum: FailureEnum.failedToCreateUser,
+        ),
+      );
     }
     return Right(
       User(
@@ -127,7 +131,7 @@ class FirebaseAuthRepository implements IAuthRepository {
           )
         : await _firebaseAuth.signInWithPopup(authProvider!);
     if (userCredential.user == null) {
-      return const Left(FirebaseFailure('user-not-found'));
+      return const Left(FirebaseFailure(failureEnum: FailureEnum.userNotFound));
     }
     return Right(
       User(

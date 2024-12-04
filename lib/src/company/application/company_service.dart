@@ -12,7 +12,7 @@ class CompanyService {
     try {
       return Right(await _repository.findByOwnerCode(ownerCode));
     } catch (e) {
-      return Left(FirebaseFailure(e.toString()));
+      return Left(FirebaseFailure(message: e.toString()));
     }
   }
 }

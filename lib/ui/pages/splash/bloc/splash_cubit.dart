@@ -58,7 +58,7 @@ class SplashCubit extends Cubit<SplashState> {
       );
       response.fold(
         (failure) {
-          error = failure.message;
+          error = failure.code;
         },
         (data) {
           companies = data;

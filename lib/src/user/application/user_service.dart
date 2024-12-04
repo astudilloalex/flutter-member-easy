@@ -13,7 +13,7 @@ class UserService {
       return Right(await _repository.saveOrUpdate(user));
     } catch (e) {
       return Left(
-        FirebaseFailure(e.toString()),
+        FirebaseFailure(message: e.toString()),
       );
     }
   }

@@ -47,9 +47,13 @@ class AuthService {
         },
       );
     } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure(e.code));
+      return Left(FirebaseFailure(message: e.code));
     } catch (e) {
-      return const Left(FirebaseFailure('an-unknown-error-ocurred'));
+      return const Left(
+        FirebaseFailure(
+          failureEnum: FailureEnum.anUnknownErrorOcurred,
+        ),
+      );
     }
   }
 
@@ -73,9 +77,13 @@ class AuthService {
         },
       );
     } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure(e.code));
+      return Left(FirebaseFailure(message: e.code));
     } catch (e) {
-      return const Left(FirebaseFailure('an-unknown-error-ocurred'));
+      return const Left(
+        FirebaseFailure(
+          failureEnum: FailureEnum.anUnknownErrorOcurred,
+        ),
+      );
     }
   }
 
@@ -84,7 +92,7 @@ class AuthService {
       await _repository.signOut();
       return const Right(true);
     } catch (e) {
-      return Left(FirebaseFailure(e.toString()));
+      return Left(FirebaseFailure(message: e.toString()));
     }
   }
 
@@ -129,7 +137,7 @@ class AuthService {
         },
       );
     } catch (e) {
-      return Left(FirebaseFailure(e.toString()));
+      return Left(FirebaseFailure(message: e.toString()));
     }
   }
 }

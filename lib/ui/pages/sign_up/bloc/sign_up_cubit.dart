@@ -52,7 +52,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
       response.fold(
         (failure) {
-          error = failure.message;
+          error = failure.code;
         },
         (user) {
           nextRoute = RouteName.splash;
@@ -91,7 +91,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
       response.fold(
         (failure) {
-          error = failure.message;
+          error = failure.code;
         },
         (user) {
           nextRoute = RouteName.splash;
