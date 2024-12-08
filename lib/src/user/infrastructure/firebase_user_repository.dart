@@ -16,4 +16,13 @@ class FirebaseUserRepository implements IUserRepository {
         .set(UserMapper.toJson(user));
     return user;
   }
+
+  @override
+  Future<User?> findByCode(String code) async {
+    final DocumentSnapshot<Map<String, dynamic>> document =
+        await _firestore.collection('users').doc(code).get();
+
+    if (!document.exists) return null;
+    return UserMapper.fromFirestoreDocument(document);
+  }
 }

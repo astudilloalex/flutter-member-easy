@@ -17,4 +17,22 @@ class UserService {
       );
     }
   }
+
+  Future<Either<Failure, User>> getByCode(String code) async {
+    try {
+      final User? user = await _repository.findByCode(code);
+      if (user == null) {
+        return const Left(
+          ServiceFailure(
+            failureEnum: FailureEnum.userNotFound,
+          ),
+        );
+      }
+      return Right(user);
+    } catch (e) {
+      return Left(
+        ServiceFailure(message: e.toString()),
+      );
+    }
+  }
 }

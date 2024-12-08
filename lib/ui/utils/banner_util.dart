@@ -28,12 +28,11 @@ class BannerUtil {
 
     scaffoldMessenger.showMaterialBanner(
       MaterialBanner(
-        elevation: 0.1,
         content: Text(
           ErrorCodeMapper.errorCodeToMessage(
             message,
             context: context,
-          ).toUpperCase(),
+          ),
         ),
         actions: [
           IconButton(

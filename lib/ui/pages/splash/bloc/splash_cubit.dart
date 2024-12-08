@@ -62,6 +62,7 @@ class SplashCubit extends Cubit<SplashState> {
         },
         (data) {
           companies = data;
+
           nextRoute = RouteName.home;
         },
       );

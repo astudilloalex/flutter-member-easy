@@ -11,6 +11,27 @@ class FirebaseMemberRepository implements IMemberRepository {
   final FirebaseFirestore _firestore;
 
   @override
+  Future<Either<Failure, Member>> findByCompanyCodeAndCode(
+    String companyCode,
+    String code,
+  ) async {
+    final DocumentSnapshot<Map<String, dynamic>> document = await _firestore
+        .collection('companies')
+        .doc(companyCode)
+        .collection('members')
+        .doc(code)
+        .get();
+    if (!document.exists) {
+      return const Left(
+        FirebaseFailure(
+          failureEnum: FailureEnum.theMemberDoesNotExist,
+        ),
+      );
+    }
+    return Right(MemberMapper.fromFirestoreDocument(document));
+  }
+
+  @override
   Future<List<Member>> findByCompanyCode(
     String companyCode, {
     Member? lastMember,
@@ -47,8 +68,10 @@ class FirebaseMemberRepository implements IMemberRepository {
         .doc(companyCode)
         .collection('members')
         .where(
-          'idCard',
-          isEqualTo: member.idCard,
+          Filter.or(
+            Filter('idCard', isEqualTo: member.idCard),
+            Filter('code', isEqualTo: member.code),
+          ),
         )
         .limit(1)
         .get();
@@ -59,12 +82,13 @@ class FirebaseMemberRepository implements IMemberRepository {
         ),
       );
     }
-    final DocumentReference<Map<String, dynamic>> doc = await _firestore
+    await _firestore
         .collection('companies')
         .doc(companyCode)
         .collection('members')
-        .add(MemberMapper.toJson(member));
-    return Right(member.copyWith(code: doc.id));
+        .doc(member.code)
+        .set(MemberMapper.toJson(member));
+    return Right(member.copyWith(code: member.code));
   }
 
   @override
@@ -93,5 +117,16 @@ class FirebaseMemberRepository implements IMemberRepository {
           MemberMapper.toJson(member.copyWith(idCard: savedMember.idCard)),
         );
     return Right(member.copyWith(idCard: savedMember.idCard));
+  }
+
+  @override
+  Future<int> count(String companyCode) async {
+    final AggregateQuerySnapshot query = await _firestore
+        .collection('companies')
+        .doc(companyCode)
+        .collection('members')
+        .count()
+        .get();
+    return query.count ?? 0;
   }
 }

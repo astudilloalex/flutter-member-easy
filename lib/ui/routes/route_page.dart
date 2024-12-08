@@ -5,7 +5,9 @@ import 'package:member_easy/app/middlewares/auth_middleware.dart';
 import 'package:member_easy/injection.dart';
 import 'package:member_easy/src/auth/application/auth_service.dart';
 import 'package:member_easy/src/company/application/company_service.dart';
+import 'package:member_easy/src/member/application/member_service.dart';
 import 'package:member_easy/src/summary/application/summary_service.dart';
+import 'package:member_easy/src/user/application/user_service.dart';
 import 'package:member_easy/ui/pages/add_edit_member/add_edit_member_page.dart';
 import 'package:member_easy/ui/pages/add_edit_member/bloc/add_edit_member_cubit.dart';
 import 'package:member_easy/ui/pages/company/bloc/company_cubit.dart';
@@ -48,12 +50,19 @@ class RoutePage {
       routes: [
         GoRoute(
           path: RouteName.addEditMember,
-          builder: (context, state) => BlocProvider(
-            create: (context) => AddEditMemberCubit(
-              company: context.read<AppCubit>().state.currentCompany,
-            ),
-            child: const AddEditMemberPage(),
-          ),
+          builder: (context, state) {
+            final Map<String, String> parameters = state.uri.queryParameters;
+            final String? memberCode = parameters['code'];
+            return BlocProvider(
+              create: (context) => AddEditMemberCubit(
+                company: context.read<AppCubit>().state.currentCompany,
+                memberService: getIt<MemberService>(),
+                userService: getIt<UserService>(),
+                memberCode: memberCode,
+              ),
+              child: const AddEditMemberPage(),
+            );
+          },
         ),
         GoRoute(
           path: RouteName.company,
@@ -79,7 +88,9 @@ class RoutePage {
         GoRoute(
           path: RouteName.member,
           builder: (context, state) => BlocProvider(
-            create: (context) => MemberCubit(),
+            create: (context) => MemberCubit(
+              memberService: getIt<MemberService>(),
+            ),
             child: const MemberPage(),
           ),
         ),

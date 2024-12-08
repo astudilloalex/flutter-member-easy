@@ -7,6 +7,7 @@ class Member {
     required this.firstName,
     required this.idCard,
     this.isActive = false,
+    required this.joinedAt,
     required this.lastName,
     this.user,
   }) : fullName = '$firstName $lastName';
@@ -17,6 +18,7 @@ class Member {
   final String fullName;
   final String idCard;
   final bool isActive;
+  final DateTime joinedAt;
   final String lastName;
   final User? user;
 
@@ -26,6 +28,7 @@ class Member {
     String? firstName,
     String? idCard,
     bool? isActive,
+    DateTime? joinedAt,
     String? lastName,
     User? user,
   }) {
@@ -35,6 +38,7 @@ class Member {
       firstName: firstName ?? this.firstName,
       idCard: idCard ?? this.idCard,
       isActive: isActive ?? this.isActive,
+      joinedAt: joinedAt ?? this.joinedAt,
       lastName: lastName ?? this.lastName,
       user: user ?? this.user,
     );

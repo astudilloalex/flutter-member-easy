@@ -21,6 +21,23 @@ class UserMapper {
     );
   }
 
+  static User fromFirestoreDocument(
+    DocumentSnapshot<Map<String, dynamic>> document,
+  ) {
+    final Map<String, dynamic> data = document.data()!;
+    return User(
+      code: document.id,
+      displayName: data['displayName'] as String?,
+      email: data['email'] as String?,
+      emailVerified: data['emailVerified'] as bool,
+      isAnonymous: data['isAnonymous'] as bool,
+      phoneNumber: data['phoneNumber'] as String?,
+      photoURL: data['photoURL'] as String?,
+      refreshToken: data['refreshToken'] as String?,
+      tenantId: data['tenantId'] as String?,
+    );
+  }
+
   static User fromJson(Map<String, dynamic> map) {
     return User(
       code: map['code'] as String,

@@ -5,6 +5,11 @@ import 'package:member_easy/src/member/domain/member.dart';
 abstract class IMemberRepository {
   const IMemberRepository();
 
+  Future<Either<Failure, Member>> findByCompanyCodeAndCode(
+    String companyCode,
+    String code,
+  );
+
   Future<List<Member>> findByCompanyCode(
     String companyCode, {
     Member? lastMember,
@@ -20,4 +25,6 @@ abstract class IMemberRepository {
     Member member, {
     required String companyCode,
   });
+
+  Future<int> count(String companyCode);
 }

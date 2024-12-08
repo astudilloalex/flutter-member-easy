@@ -19,6 +19,7 @@ class MemberMapper {
       firstName: data['firstName'] as String,
       idCard: data['idCard'] as String,
       isActive: data['isActive'] as bool,
+      joinedAt: DateTime.parse(data['joinedAt'].toString()),
       lastName: data['lastName'] as String,
       user: data['user'] == null
           ? null
@@ -40,6 +41,7 @@ class MemberMapper {
       firstName: data['firstName'] as String,
       idCard: data['idCard'] as String,
       isActive: data['isActive'] as bool,
+      joinedAt: DateTime.parse(data['joinedAt'].toString()),
       lastName: data['lastName'] as String,
       user: data['user'] == null
           ? null
@@ -49,11 +51,13 @@ class MemberMapper {
 
   static Map<String, dynamic> toJson(Member member) {
     return {
+      'code': member.code,
       'birthdate': member.birthdate?.toIso8601String(),
       'firstName': member.firstName,
       'fullName': member.fullName,
       'idCard': member.idCard,
       'isActive': member.isActive,
+      'joinedAt': member.joinedAt.toIso8601String(),
       'lastName': member.lastName,
       'user': member.user == null ? null : UserMapper.toJson(member.user!),
     };

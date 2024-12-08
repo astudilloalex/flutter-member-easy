@@ -9,7 +9,25 @@ class MemberService {
 
   final IMemberRepository _repository;
 
-  Future<Either<Failure, List<Member>>> findAll({
+  Future<Either<Failure, Member>> byCode(String code) async {
+    try {
+      if (AppSessionData.company == null) {
+        return const Left(
+          ServiceFailure(
+            failureEnum: FailureEnum.thereIsNoCompanySelected,
+          ),
+        );
+      }
+      return await _repository.findByCompanyCodeAndCode(
+        AppSessionData.company!.code,
+        code,
+      );
+    } catch (e) {
+      return Left(ServiceFailure(message: e.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<Member>>> all({
     int limit = 25,
     Member? lastMember,
   }) async {
@@ -39,6 +57,12 @@ class MemberService {
           ServiceFailure(
             failureEnum: FailureEnum.thereIsNoCompanySelected,
           ),
+        );
+      }
+      final int count = await _repository.count(AppSessionData.company!.code);
+      if (count >= AppSessionData.company!.maxCustomers) {
+        return const Left(
+          ServiceFailure(failureEnum: FailureEnum.maximumNumberMembersReached),
         );
       }
       return await _repository.save(
