@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:member_easy/app/errors/failure.dart';
+import 'package:member_easy/src/attendance/application/attendance_service.dart';
+import 'package:member_easy/src/attendance/domain/attendance.dart';
 import 'package:member_easy/src/member/application/member_service.dart';
 import 'package:member_easy/src/member/domain/member.dart';
 import 'package:member_easy/ui/pages/member/bloc/member_state.dart';
@@ -10,12 +12,14 @@ import 'package:member_easy/ui/pages/member/bloc/member_state.dart';
 class MemberCubit extends Cubit<MemberState> {
   MemberCubit({
     required this.memberService,
+    required this.attendanceService,
   }) : super(const MemberState()) {
     log('MemberCubit created', name: 'Cubit');
     init();
   }
 
   final MemberService memberService;
+  final AttendanceService attendanceService;
 
   @override
   Future<void> close() {
@@ -47,5 +51,16 @@ class MemberCubit extends Cubit<MemberState> {
       (a, b) => a.fullName.compareTo(b.fullName),
     );
     emit(state.copyWith(members: members));
+  }
+
+  Future<void> markAttendance(Member member) async {
+    try {
+      attendanceService.createOrUpdate(
+        member.code,
+        attendance: Attendance(
+          date: DateTime.now(),
+        ),
+      );
+    } finally {}
   }
 }

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:member_easy/app/bloc/app_cubit.dart';
 import 'package:member_easy/app/middlewares/auth_middleware.dart';
 import 'package:member_easy/injection.dart';
+import 'package:member_easy/src/attendance/application/attendance_service.dart';
 import 'package:member_easy/src/auth/application/auth_service.dart';
 import 'package:member_easy/src/company/application/company_service.dart';
 import 'package:member_easy/src/member/application/member_service.dart';
@@ -16,6 +17,8 @@ import 'package:member_easy/ui/pages/home/bloc/home_cubit.dart';
 import 'package:member_easy/ui/pages/home/home_page.dart';
 import 'package:member_easy/ui/pages/member/bloc/member_cubit.dart';
 import 'package:member_easy/ui/pages/member/member_page.dart';
+import 'package:member_easy/ui/pages/member_detail/bloc/member_detail_cubit.dart';
+import 'package:member_easy/ui/pages/member_detail/member_detail_page.dart';
 import 'package:member_easy/ui/pages/sign_in/bloc/sign_in_cubit.dart';
 import 'package:member_easy/ui/pages/sign_in/sign_in_page.dart';
 import 'package:member_easy/ui/pages/sign_up/bloc/sign_up_cubit.dart';
@@ -90,8 +93,20 @@ class RoutePage {
           builder: (context, state) => BlocProvider(
             create: (context) => MemberCubit(
               memberService: getIt<MemberService>(),
+              attendanceService: getIt<AttendanceService>(),
             ),
             child: const MemberPage(),
+          ),
+        ),
+        GoRoute(
+          path: '${RouteName.memberDetail}/:memberCode',
+          builder: (context, state) => BlocProvider(
+            create: (context) => MemberDetailCubit(
+              memberService: getIt<MemberService>(),
+              attendanceService: getIt<AttendanceService>(),
+              memberCode: state.pathParameters['memberCode']!,
+            ),
+            child: const MemberDetailPage(),
           ),
         ),
         GoRoute(

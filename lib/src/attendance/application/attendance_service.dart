@@ -53,7 +53,15 @@ class AttendanceService {
       return _repository.saveOrUpdate(
         AppSessionData.company!.code,
         memberCode: memberCode,
-        attendance: attendance,
+        attendance: attendance.copyWith(
+          date: attendance.date.copyWith(
+            hour: 0,
+            microsecond: 0,
+            millisecond: 0,
+            minute: 0,
+            second: 0,
+          ),
+        ),
       );
     } catch (e) {
       return Left(

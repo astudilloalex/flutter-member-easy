@@ -42,6 +42,8 @@
   "@logout": {},
   "maximumNumberMembersReached": "Maximum number of members reached",
   "@maximumNumberMembersReached": {},
+  "memberDetail": "Member detail",
+  "@memberDetail": {},
   "members": "Members",
   "@members": {},
   "no": "No",

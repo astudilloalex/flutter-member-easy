@@ -23,25 +23,30 @@ class FirebaseAttendanceRepository implements IAttendanceRepository {
         .collection('members')
         .doc(memberCode)
         .collection('attendances')
+        .orderBy('date', descending: true)
         .where(
           Filter.and(
             Filter(
               'date',
-              isGreaterThanOrEqualTo: startDate.copyWith(
-                hour: 0,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-                microsecond: 0,
-              ),
+              isGreaterThanOrEqualTo: startDate
+                  .copyWith(
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                    microsecond: 0,
+                  )
+                  .toIso8601String(),
             ),
             Filter(
               'date',
-              isLessThanOrEqualTo: endDate.copyWith(
-                hour: 23,
-                minute: 59,
-                second: 59,
-              ),
+              isLessThanOrEqualTo: endDate
+                  .copyWith(
+                    hour: 23,
+                    minute: 59,
+                    second: 59,
+                  )
+                  .toIso8601String(),
             ),
           ),
         )
@@ -69,13 +74,15 @@ class FirebaseAttendanceRepository implements IAttendanceRepository {
         .collection('attendances')
         .where(
           'date',
-          isEqualTo: attendance.date.copyWith(
-            hour: 0,
-            microsecond: 0,
-            millisecond: 0,
-            minute: 0,
-            second: 0,
-          ),
+          isEqualTo: attendance.date
+              .copyWith(
+                hour: 0,
+                microsecond: 0,
+                millisecond: 0,
+                minute: 0,
+                second: 0,
+              )
+              .toIso8601String(),
         )
         .get();
     if (query.docs.isNotEmpty) {
